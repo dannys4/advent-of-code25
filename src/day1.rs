@@ -1,58 +1,73 @@
-use regex::Regex;
-use std::collections::HashMap;
-
-fn as_num(n: &str, num_map: &HashMap<&str,u32>) -> u32 {
-    // println!("n = {n}\n");
-    let n_dig = n.chars().next().unwrap().to_digit(10);
-    if n_dig.is_some() {
-        return n_dig.unwrap();
+fn dir_sign(dir: char) -> i32 {
+    let ldir = dir.to_ascii_uppercase();
+    match ldir {
+        'L' => return -1,
+        'R' => return 1,
+        _ => return 0,
     }
-    return *num_map.get(n).expect("Key not found");
+}
+
+fn divmod(i: i32, d: i32) -> (i32, i32) {
+    return (i / d, i % d);
+}
+
+fn get_number(line: &str) -> i32 {
+    let sign = dir_sign(line.chars().next().unwrap());
+    let num_str = &line[1..];
+    let num = num_str.parse::<i32>().unwrap();
+    return sign * num;
+}
+
+fn part1(histories: &Vec<i32>) -> i32 {
+    let mut tracker = 50;
+    let mut zeros = 0;
+    for x in histories {
+        tracker = (tracker + x) % 100;
+        if tracker == 0 {
+            zeros += 1;
+        }
+    }
+    return zeros;
+}
+
+fn part2_iter(start: i32, inc: i32) -> (i32, i32) {
+    // Returns (next, number zeros)
+    let next_full = start + inc;
+    let (next, num_zeros);
+    let (q, r) = divmod(next_full, 100);
+    if next_full < 0 {
+        next = (100 + r) % 100;
+    } else {
+        next = r;
+    }
+    if next_full == 0 {
+        num_zeros = (inc != 0) as i32;
+    } else if next_full < 0 {
+        num_zeros = q.abs() + ((start != 0) as i32);
+    } else if next_full >= 100 {
+        num_zeros = q;
+    } else {
+        num_zeros = 0;
+    }
+    return (next, num_zeros);
+}
+
+fn part2(histories: &Vec<i32>) -> i32 {
+    let mut tracker = 50;
+    let mut zeros = 0;
+    for (j, x) in histories.iter().enumerate() {
+        let (t_j, z_j) = part2_iter(tracker, *x);
+        tracker = t_j;
+        zeros += z_j;
+        println!("{j}\t{tracker}\t{zeros}\t\t{x}");
+    }
+    return zeros;
 }
 
 pub fn day1(contents: &String) {
-    let nums_str = ["one", "two", "three", "four", "five", "six", "seven", "eight", "nine"];
-    let mut num_dict: HashMap<&str, u32> = HashMap::new();
-    let mut nums = Vec::new();
-    for (j, num_str) in nums_str.iter().enumerate() {
-        num_dict.insert(*num_str, (j+1).try_into().unwrap());
-        nums.push(*num_str);
-    }
-    nums.push(r"[1-9]");
-    let mut sum = 0;
-    for line in contents.lines() {
-        if line.len() <= 0 {
-            break;
-        }
-        let nums: Vec<u32> = line.chars().filter_map(|a| a.to_digit(10)).collect();
-        sum += nums[0]*10 + nums[nums.len() - 1];
-    }
-    println!("Part 1: Sum is {sum}");
-    sum = 0;
-    let matchers = nums.iter().map(|x| Regex::new(x).unwrap()).collect::<Vec<_>>();
-    for line in contents.lines() {
-        if line.len() <= 0 {
-            break;
-        }
-        let mut min_idx: i32 = -1;
-        let mut min_val = 0;
-        let mut max_idx = 0;
-        let mut max_val = 0;
-        for matcher in matchers.clone() {
-            // let num_iter = matcher.find_iter(line).map(|n| as_num(n.as_str(), &num_dict));
-            for my_match in matcher.find_iter(line) {
-                let start_idx: i32 = my_match.start().try_into().unwrap();
-                if min_idx < 0 || start_idx <= min_idx {
-                    min_idx = start_idx;
-                    min_val = as_num(my_match.as_str(), &num_dict);
-                }
-                if start_idx >= max_idx {
-                    max_idx = start_idx;
-                    max_val = as_num(my_match.as_str(), &num_dict);
-                }
-            }
-        }
-        sum += min_val*10 + max_val;
-    }
-    println!("Part 2: Sum is {sum}");
+    let histories: Vec<i32> = contents.lines().map(get_number).collect();
+    let p1 = part1(&histories);
+    println!("Part 1: {p1}");
+    let p2 = part2(&histories);
+    println!("Part 2: {p2}");
 }
