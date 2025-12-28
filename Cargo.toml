@@ -4,5 +4,6 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
+ndarray = "0.17.1"
 pcre2 = "0.2.11"
 regex = "1.12.2"
