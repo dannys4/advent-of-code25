@@ -1,4 +1,5 @@
 mod day1;
+mod day2;
 
 use std::fs;
 
@@ -9,7 +10,7 @@ fn setup(day: i32) -> String {
 }
 
 fn main() {
-    let days: Vec<(&dyn Fn(&String) -> (), bool)> = vec![(&day1::day1, true)];
+    let days: Vec<(&dyn Fn(&String) -> (), bool)> = vec![(&day1::day1, false), (&day2::day2, true)];
     let mut day = 1;
     for (f, show) in &days {
         if *show {
