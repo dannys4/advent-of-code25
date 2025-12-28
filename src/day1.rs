@@ -55,11 +55,11 @@ fn part2_iter(start: i32, inc: i32) -> (i32, i32) {
 fn part2(histories: &Vec<i32>) -> i32 {
     let mut tracker = 50;
     let mut zeros = 0;
-    for (j, x) in histories.iter().enumerate() {
+    for (_j, x) in histories.iter().enumerate() {
         let (t_j, z_j) = part2_iter(tracker, *x);
         tracker = t_j;
         zeros += z_j;
-        println!("{j}\t{tracker}\t{zeros}\t\t{x}");
+        // println!("{j}\t{tracker}\t{zeros}\t\t{x}");
     }
     return zeros;
 }
