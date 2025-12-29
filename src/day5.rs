@@ -1,5 +1,3 @@
-// use std::cmp::{max, min};
-
 use std::cmp::max;
 
 fn process_range(range: &str) -> (u64, u64) {
