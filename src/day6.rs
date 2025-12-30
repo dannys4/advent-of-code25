@@ -1,6 +1,6 @@
+use std::iter::zip;
+
 use ndarray::prelude::*;
-use regex::Regex;
-use std::{cmp::max, default, iter::zip};
 
 fn process_contents(contents: &String) -> (Array2<u64>, Vec<char>) {
     let sp: Vec<&str> = contents.split("\n").collect();
