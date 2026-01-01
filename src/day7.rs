@@ -1,5 +1,4 @@
 use std::collections::HashMap;
-use std::hash::Hash;
 use std::mem::swap;
 
 use ndarray::prelude::*;
@@ -50,7 +49,7 @@ fn part2_helper(
     curr_pos: usize,
     arr: &Array2<bool>,
     row_idx: usize,
-    mut memos: &mut HashMap<(usize, usize), u64>,
+    memos: &mut HashMap<(usize, usize), u64>,
 ) -> u64 {
     if row_idx >= arr.shape()[0] {
         return 1;
