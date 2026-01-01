@@ -17,7 +17,7 @@ fn process_contents(contents: &String) -> (Array2<u64>, Vec<char>) {
     return (arr, ops);
 }
 
-fn count_digits(n: usize) -> usize {
+fn _count_digits(n: usize) -> usize {
     return (n.checked_ilog10().unwrap_or(0) as usize) + 1;
 }
 
