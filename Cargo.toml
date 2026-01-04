@@ -11,6 +11,5 @@ good_lp = { version = "1.14.2", features = [
 indicatif = "0.18.3"
 itertools = "0.14.0"
 ndarray = "0.16.1"
-nnls = "0.4.0"
 pcre2 = "0.2.11"
 regex = "1.12.2"

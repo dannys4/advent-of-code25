@@ -11,7 +11,6 @@ dependencies = [
  "indicatif",
  "itertools 0.14.0",
  "ndarray",
- "nnls",
  "pcre2",
  "regex",
 ]
@@ -268,12 +267,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "hashbrown"
-version = "0.16.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "841d1cc9bed7f9236f321df977030373f4a4163ae1a7dbfe1a51a2c1a51d9100"
-
-[[package]]
 name = "heapless"
 version = "0.8.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -327,16 +320,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "35e6d558e6d4c7b82bc51d9c771e7a927862a161a7d87bf2b0541450e0e20915"
 
 [[package]]
-name = "indexmap"
-version = "2.12.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "0ad4bb2b565bca0645f4d68c5c9af97fba094e9791da685bf83cb5f3ce74acf2"
-dependencies = [
- "equivalent",
- "hashbrown 0.16.1",
-]
-
-[[package]]
 name = "indicatif"
 version = "0.18.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -354,15 +337,6 @@ name = "itertools"
 version = "0.11.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "b1c173a5686ce8bfa551b3563d0c2170bf24ca44da99c7ca4bfdab5418c3fe57"
-dependencies = [
- "either",
-]
-
-[[package]]
-name = "itertools"
-version = "0.13.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "413ee7dfc52ee1a4949ceeb7dbc8a33f2d6c088194d9f922fb8318faf1f01186"
 dependencies = [
  "either",
 ]
@@ -457,7 +431,6 @@ version = "0.16.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "882ed72dce9365842bf196bdeedf5055305f11fc8c03dee7bb0194a6cad34841"
 dependencies = [
- "approx",
  "matrixmultiply",
  "num-complex",
  "num-integer",
@@ -465,41 +438,6 @@ dependencies = [
  "portable-atomic",
  "portable-atomic-util",
  "rawpointer",
-]
-
-[[package]]
-name = "ndarray-stats"
-version = "0.6.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "17ebbe97acce52d06aebed4cd4a87c0941f4b2519b59b82b4feb5bd0ce003dfd"
-dependencies = [
- "indexmap",
- "itertools 0.13.0",
- "ndarray",
- "noisy_float",
- "num-integer",
- "num-traits",
- "rand",
-]
-
-[[package]]
-name = "nnls"
-version = "0.4.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "bf993d67a0de0c06a1907560b41b00422cc1f9a0e0b5c841de0cae5de3a6f4af"
-dependencies = [
- "approx",
- "ndarray",
- "ndarray-stats",
-]
-
-[[package]]
-name = "noisy_float"
-version = "0.2.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "978fe6e6ebc0bf53de533cd456ca2d9de13de13856eda1518a285d7705a213af"
-dependencies = [
- "num-traits",
 ]
 
 [[package]]
@@ -774,7 +712,7 @@ version = "2.15.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "fb313e1c8afee5b5647e00ee0fe6855e3d529eb863a0fdae1d60006c4d1e9990"
 dependencies = [
- "hashbrown 0.15.5",
+ "hashbrown",
  "num-traits",
  "robust",
  "smallvec",

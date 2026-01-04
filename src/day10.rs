@@ -1,12 +1,6 @@
-use good_lp::{
-    constraint, default_solver, variable, variables, Expression, ProblemVariables, Solution,
-    SolverModel,
-};
+use good_lp::{default_solver, variable, Expression, ProblemVariables, Solution, SolverModel};
 use indicatif::ProgressIterator;
-use itertools::Itertools;
-use ndarray::prelude::*;
-use nnls;
-use std::{cmp::min, collections::HashMap};
+use std::cmp::min;
 
 #[derive(Debug)]
 struct Machine {
@@ -75,50 +69,6 @@ fn part1_helper(
     return min(not_press_button, press_button);
 }
 
-fn part2_helper(
-    joltage_target: &Vec<u16>,
-    joltage_curr: &Vec<u16>,
-    buttons: &[Vec<usize>],
-    memo: &mut HashMap<(Vec<u16>, usize), u16>,
-) -> u16 {
-    if joltage_target == joltage_curr {
-        return 0;
-    }
-    if buttons.len() == 0 {
-        return u16::MAX;
-    }
-    let memo_key = (joltage_curr.clone(), buttons.len());
-    let memoized = memo.get(&memo_key);
-    if memoized.is_some() {
-        let memo_val = *memoized.unwrap();
-        if memo_val == u16::MAX {
-            return memo_val;
-        }
-        return memo_val;
-    }
-    let button = &buttons[0];
-    let buttons_left = &buttons[1..];
-    // let not_press_button =
-    let mut curr_min = u16::MAX;
-    let mut buttons_pressed_loop = 0;
-    let mut joltage_pressed = joltage_curr.clone();
-    loop {
-        let press_button = part2_helper(joltage_target, &joltage_pressed, buttons_left, memo);
-        if press_button != u16::MAX {
-            curr_min = min(curr_min, press_button + buttons_pressed_loop);
-        }
-        buttons_pressed_loop += 1;
-
-        for &b_idx in button {
-            if joltage_pressed[b_idx] >= joltage_target[b_idx] {
-                memo.insert(memo_key, curr_min);
-                return curr_min;
-            }
-            joltage_pressed[b_idx] += 1;
-        }
-    }
-}
-
 fn part1_iter(machine: &Machine) -> u64 {
     // println!("{:?}", machine);
     let light_target = &machine.lights;
@@ -127,31 +77,6 @@ fn part1_iter(machine: &Machine) -> u64 {
     let buttons_pressed = part1_helper(light_target, &light_curr, buttons, 0);
     return buttons_pressed as u64;
 }
-
-fn part2_iter(machine: &Machine) -> u64 {
-    let joltage_target = &machine.joltage;
-    let joltage_curr: Vec<u16> = (0..joltage_target.len()).map(|_| 0).collect();
-    let buttons = &machine.buttons;
-    let mut memo = HashMap::new();
-    let buttons_pressed = part2_helper(joltage_target, &joltage_curr, buttons, &mut memo);
-    return buttons_pressed as u64;
-}
-
-fn part2_iter_linalg(machine: &Machine) -> u64 {
-    let (m, n) = (machine.joltage.len(), machine.buttons.len());
-    let mut lhs: Array2<f64> = Array2::zeros((m, n));
-    for (col_idx, b) in (&machine.buttons).iter().enumerate() {
-        for &b_idx in b {
-            lhs[[b_idx, col_idx]] = 1.;
-        }
-    }
-    let rhs: Array1<f64> = Array1::from_iter(machine.joltage.iter().map(|&x| x as f64));
-    let (ans, err): (Array1<f64>, f64) = nnls::nnls(lhs.view(), rhs.view());
-    println!("{:?}", ans);
-    return 0;
-}
-
-// fn produce_constraint(target_joltage: u16, button_presses: &Vec<Variable>, buttons: &Vec<Vec<usize>>) -> Constraint
 
 fn part2_iter_lp(machine: &Machine) -> u64 {
     let (joltage, buttons) = (&machine.joltage, &machine.buttons);
