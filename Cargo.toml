@@ -4,6 +4,7 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
+geo = "0.32.0"
 itertools = "0.14.0"
 ndarray = "0.17.1"
 pcre2 = "0.2.11"
