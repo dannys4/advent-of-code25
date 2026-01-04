@@ -1,5 +1,5 @@
-use ndarray::{linalg, prelude::*};
-use std::{collections::HashMap, mem::swap};
+use ndarray::prelude::*;
+use std::collections::HashMap;
 
 type KT = usize;
 type Graph = HashMap<KT, Vec<KT>>;
@@ -69,23 +69,6 @@ fn part1(keys: &HashMap<&str, usize>, graph: &Graph) -> Option<u64> {
     let mut visited = (0..keys.len()).map(|_| false).collect();
     let ways1 = depth_first_helper(graph, node0, &mut visited, node1)?;
     return Some(ways1);
-}
-
-fn part2(keys: &HashMap<&str, usize>, graph: &Graph) -> Option<u64> {
-    let node0 = *keys.get("svr")?;
-    let node1 = *keys.get("dac")?;
-    let node2 = *keys.get("fft")?;
-    let node3 = *keys.get("out")?;
-    let mut visited = (0..keys.len()).map(|_| false).collect();
-    let ways1 = depth_first_helper(graph, node0, &mut visited, node1)?;
-    println!("{}", ways1);
-    visited.fill(false);
-    let ways2 = depth_first_helper(graph, node1, &mut visited, node2)?;
-    println!("{}", ways2);
-    visited.fill(false);
-    let ways3 = depth_first_helper(graph, node2, &mut visited, node3)?;
-    println!("{}", ways3);
-    return Some(ways1 * ways2 * ways3);
 }
 
 fn distance_linalg(adj: ArrayView2<u64>, start: usize, end: usize) -> Option<u64> {
