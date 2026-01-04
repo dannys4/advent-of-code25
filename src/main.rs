@@ -1,4 +1,5 @@
 mod day1;
+mod day10;
 mod day2;
 mod day3;
 mod day4;
@@ -26,7 +27,8 @@ fn main() {
         (&day6::day6, false),
         (&day7::day7, false),
         (&day8::day8, false),
-        (&day9::day9, true),
+        (&day9::day9, false),
+        (&day10::day10, true),
     ];
     let mut day = 1;
     for (f, show) in &days {
