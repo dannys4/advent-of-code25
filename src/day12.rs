@@ -18,17 +18,6 @@ fn count_array(input: &Array2<bool>) -> u64 {
     return input.map(|&i| i as u64).sum();
 }
 
-fn _print_bool_array(arr: ArrayView2<bool>) {
-    println!(
-        "{}",
-        arr.map_axis(Axis(0), |a| {
-            a.map(|&x| if x { '#' } else { '.' }).iter().join("")
-        })
-        .iter()
-        .join("\n")
-    );
-}
-
 fn rotate_once(gift: &Array2<bool>) -> Array2<bool> {
     let (rows, cols) = gift.dim();
     let mut arr = Array2::default((cols, rows));
@@ -120,7 +109,6 @@ fn fit_under_tree_loop(
     let slice_idxs = s![row_idx..row_bound, col_idx..col_bound];
     let slice: ArrayView2<bool> = state.slice(slice_idxs);
     let piece_fits = is_piece_fit(slice, gift_arr);
-    // println!("Piece fits: {}", piece_fits);
     if piece_fits {
         let mut slice_mut: ArrayViewMut2<bool> = new_state.slice_mut(slice_idxs);
         for ((i, j), b) in gift_arr.indexed_iter() {
@@ -149,10 +137,6 @@ fn fit_under_tree_helper(
     let next_gift = first_idx.unwrap().0;
     requirements[next_gift] -= 1;
     let gift = &gifts[next_gift];
-    // println!("\nstate and gift:"); //\n{:?}\n{:?}", state, gift.north);
-    // print_bool_array(state);
-    // print!("\n");
-    // print_bool_array(gift.north.view());
     let mut new_state: Array2<bool> = state.to_owned();
     for orientation in 0..3 {
         let gift_arr = get_orientation(gift, orientation)?;
@@ -182,7 +166,6 @@ fn fit_under_tree_helper(
 
 fn fit_under_tree(tree: &Tree, gifts: &Vec<Gift>) -> Option<bool> {
     if !is_valid_num_occupied(gifts, tree) {
-        // println!("Invalid gifts and tree:\n{:?}\n{:?}", gifts, tree);
         return Some(false);
     }
     let tree_size = (tree.rows, tree.cols);
